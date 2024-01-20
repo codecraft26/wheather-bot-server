@@ -17,20 +17,6 @@ export class UserService {
     }
 
 
-    googleLogin(req) {
-        if (!req.user) {
-            return 'No user from google'
-        }
-
-        return {
-            message: 'User information from google',
-            user: req.user
-        }
-    }
-
-
-    
-
 
     async findOrCreateUser(chatId: number, userName: string): Promise<User> {
         const user = await this.userModel.findOne({ chatId })
@@ -45,6 +31,11 @@ export class UserService {
 
         }
 
+    }
+
+    async getAllUsers(): Promise<User[]> {
+        const users = await this.userModel.find();
+        return users;
     }
 
 
@@ -85,7 +76,7 @@ export class UserService {
     }
 
 
-    async getUser(id: string): Promise<User> {
+    async getUserById(id: string): Promise<User> {
         try {
             const user = await this.userModel.findById(id);
             return user;
@@ -94,6 +85,30 @@ export class UserService {
             throw new Error(`User with chatId `);
         }
     }
+
+    async deleteUser(id: string): Promise<any> {
+        try {
+            // Find and delete the user by their id
+            const user = await this.userModel.findByIdAndDelete(id);
+            if (!user) {
+                throw new Error(`User with id ${id} not found`);
+            }
+    
+            // Check if the user is in the Subscribed model and remove them
+            await this.subscribedModel.updateMany(
+                { users: user._id }, 
+                { $pull: { users: user._id } }
+            );
+    
+            return {
+                message: 'User deleted successfully',
+                user: user
+            };
+        } catch (error) {
+            throw new Error(`Error deleting user with id ${id}: ${error.message}`);
+        }
+    }
+
 
     async addToSubscribedModel(chatId: number): Promise<void> {
         // Find the user by their chatId
@@ -127,6 +142,9 @@ export class UserService {
 
 
     }
+
+
+    
 
 
 

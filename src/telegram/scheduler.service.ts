@@ -20,7 +20,7 @@ export class SchedulerService {
     async sendDailyWeatherUpdates() {
         const subscribedUsers = await this.userService.getSubscribedUsers();
         for (const user of subscribedUsers) {
-            const userdetails=await this.userService.getUser(user._id);
+            const userdetails=await this.userService.getUserById(user._id);
             const location = await this.userService.getUserLocation(userdetails.chatId);
             if (location) {
 
