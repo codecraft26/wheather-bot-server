@@ -8,20 +8,12 @@ export type UserDocument = User & Document
 export class User extends Document {
     @Prop()
     name: string;
-
     @Prop()
     chatId: number;
-
     @Prop()
     subscribed: Boolean
-
     @Prop()
-
     location:string
-
-
-
-
 }
 
 
