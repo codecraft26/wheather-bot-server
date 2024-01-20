@@ -1,13 +1,18 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class WeatherService {
-    private readonly apiKey = 'f0ba90cdbf774037899174614241901'
+ 
     private readonly logger = new Logger(WeatherService.name);
 
-    constructor(private httpService: HttpService) {}
+    private apiKey: string;
+
+    constructor(private httpService: HttpService, private configService: ConfigService) {
+        this.apiKey = this.configService.get<string>('WHEATHER');
+    }
 
     getWeather(city: string): Observable<any> {
         const url = `https://api.weatherapi.com/v1/current.json?q=${city}&key=${this.apiKey}`;
