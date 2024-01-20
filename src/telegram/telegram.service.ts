@@ -55,6 +55,9 @@ export class TelegramService {
     
                    
                     setTimeout(() => this.offerSubscription(chatId), 2000); // 2-second delay
+
+                    // Update user's location
+                    this.userService.updateUserLocation(chatId, data.location.name);
     
                     this.chatStates[chatId] = 'AWAITING_SUBSCRIPTION';
                 },
@@ -86,14 +89,25 @@ export class TelegramService {
         this.sendMessageToUser(chatId, "Do you want to subscribe to the weather forecast for your city on a daily basis? Send /subscribe to confirm.");
     }
 
-    handleSubscription(chatId: number) {
-        this.userService.subscribeUser(chatId).then(() => {
-            this.sendMessageToUser( chatId,"You have subscribed to daily weather updates.");
-        }).catch((error) => {
+    handleSubscription = async (chatId: number) => {
+        try {
+            await this.userService.subscribeUser(chatId);
+    
+            // Get the user's last known location
+            const location = await this.userService.getUserLocation(chatId);
+            if (location) {
+                // Fetch and send weather information for the last known location
+                const weatherInfo = await this.weatherService.getWeather(location);
+                const message = `You have subscribed to daily weather updates.\n\n For the location ${location} \n\n You get an daily update of wheather At 9:00AM `;
+                this.sendMessageToUser(chatId, message);
+            } else {
+                this.sendMessageToUser(chatId, "You have subscribed to daily weather updates.");
+            }
+        } catch (error) {
             this.logger.error(`Failed to subscribe user: ${error.message}`);
-           
-        });
-    }
+            this.sendMessageToUser(chatId, "Failed to process your subscription.");
+        }
+    };
 
 
     private handleStartCommand(msg: any) {

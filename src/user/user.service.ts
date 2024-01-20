@@ -43,22 +43,36 @@ export class UserService {
 
 
     async subscribeUser(chatId: number): Promise<User> {
-      
-        const user = await this.userModel.findOneAndUpdate({ chatId }, { subscribed: true }, { new: true });
-    
-        
-        if (user) {
-           
-            //update the user 
 
+        const user = await this.userModel.findOneAndUpdate({ chatId }, { subscribed: true }, { new: true });
+
+
+        if (user) {
             return user;
         }
-    
-       
         throw new Error(`User with chatId ${chatId} not found`);
     }
 
 
-
+    async updateUserLocation(chatId: number, location: string): Promise<void> {
+        try {
+            const user = await this.userModel.findOne({ chatId });
+            if (user) {
+                user.location = location;
+                await user.save();
+            }
+        } catch (error) {
+           throw new Error(`User with chatId ${chatId} not found`);
+        }
+}
+async getUserLocation(chatId: number): Promise<string> {
+    try {
+        const user = await this.userModel.findOne({ chatId });
+        return user ? user.location : null;
+    } catch (error) {
+        
+       throw new Error(`User with chatId ${chatId} not found`);
+    }
+}
 
 }
