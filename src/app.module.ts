@@ -6,6 +6,7 @@ import { TelegramModule } from './telegram/telegram.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath:[".local.env"]
 
     }),
+    ScheduleModule.forRoot(),
     MongooseModule.forRootAsync({
       imports:[ConfigModule],
       useFactory:(ConfigService:ConfigService)=>({
@@ -25,7 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
 
       
-    UserModule, TelegramModule
+    UserModule, TelegramModule,
   ],
   controllers: [AppController],
   providers: [AppService],

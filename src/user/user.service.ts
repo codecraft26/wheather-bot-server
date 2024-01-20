@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { User } from './user.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { promises } from 'dns';
 
+import { Subscribed } from './subscribed.model';
 
 @Injectable()
 export class UserService {
@@ -11,6 +11,7 @@ export class UserService {
     constructor(
         @InjectModel(User.name)
         private userModel: Model<User>,
+        @InjectModel(Subscribed.name) private subscribedModel: Model<Subscribed> 
     ) {
 
     }
@@ -48,6 +49,9 @@ export class UserService {
 
 
         if (user) {
+               
+
+
             return user;
         }
         throw new Error(`User with chatId ${chatId} not found`);
@@ -75,4 +79,28 @@ async getUserLocation(chatId: number): Promise<string> {
     }
 }
 
+async addToSubscribedModel(chatId: number): Promise<void> {
+    // Find the user by their chatId
+    const user = await this.userModel.findOne({ chatId: chatId }).exec();
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    
+    const isSubscribed = await this.subscribedModel.findOne({ users: user._id }).exec();
+    if (isSubscribed) {
+        throw new Error('User already subscribed');
+    }
+
+    const subscribed = new this.subscribedModel({
+        users: [user._id],
+    });
+
+    await subscribed.save();
 }
+
+
+}
+
+
+
