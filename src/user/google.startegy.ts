@@ -13,7 +13,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy,'google'){
         super({
             clientID:'714463495336-u7uvskqrb3j9e1ntft4tccob66ramoft.apps.googleusercontent.com',
             clientSecret:'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',
-            callbackURL:'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',
+            callbackURL:'https://wheather-updates.onrender.com/auth/google/callback',
             scope:['email','profile','name']
         });
     }
