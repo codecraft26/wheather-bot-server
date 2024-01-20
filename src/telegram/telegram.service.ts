@@ -1,10 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { WeatherService } from './wheather.service';
 import { UserService } from 'src/user/user.service';
-import { InjectModel } from '@nestjs/mongoose';
+
 import { ConfigService } from '@nestjs/config';
-import { User } from 'src/user/user.model';
-import { Model } from 'mongoose';
+
 
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -92,12 +91,13 @@ export class TelegramService {
     handleSubscription = async (chatId: number) => {
         try {
             await this.userService.subscribeUser(chatId);
+
+            await this.userService.addToSubscribedModel(chatId);
     
             // Get the user's last known location
             const location = await this.userService.getUserLocation(chatId);
             if (location) {
-                // Fetch and send weather information for the last known location
-                const weatherInfo = await this.weatherService.getWeather(location);
+                
                 const message = `You have subscribed to daily weather updates.\n\n For the location ${location} \n\n You get an daily update of wheather At 9:00AM `;
                 this.sendMessageToUser(chatId, message);
             } else {
@@ -105,7 +105,7 @@ export class TelegramService {
             }
         } catch (error) {
             this.logger.error(`Failed to subscribe user: ${error.message}`);
-            this.sendMessageToUser(chatId, "Failed to process your subscription.");
+            this.sendMessageToUser(chatId, "You Are already subscribed");
         }
     };
 
