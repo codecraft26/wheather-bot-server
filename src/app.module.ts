@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     }),
 
       
-    UserModule, TelegramModule,
+    UserModule, TelegramModule, AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
