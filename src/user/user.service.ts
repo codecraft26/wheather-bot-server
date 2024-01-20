@@ -79,6 +79,17 @@ async getUserLocation(chatId: number): Promise<string> {
     }
 }
 
+
+async getUser(id: string): Promise<User> {
+    try {
+        const user = await this.userModel.findById(id);
+        return user;
+    } catch (error) {
+        
+       throw new Error(`User with chatId `);
+    }
+}
+
 async addToSubscribedModel(chatId: number): Promise<void> {
     // Find the user by their chatId
     const user = await this.userModel.findOne({ chatId: chatId }).exec();
@@ -99,8 +110,19 @@ async addToSubscribedModel(chatId: number): Promise<void> {
     await subscribed.save();
 }
 
+async checkIfUserSubscribed(chatId: number): Promise<boolean> {
+    
+    const subscribedUser = await this.subscribedModel.findOne({ chatId: chatId }).exec();
+    return !!subscribedUser;
+}
+
+async getSubscribedUsers():Promise<User[]> {
+    const subscribedUsers = await this.subscribedModel.find().populate('users').exec();
+   return subscribedUsers.map((subscribed) => subscribed.users).flat();
+
 
 }
 
 
 
+}

@@ -104,8 +104,8 @@ export class TelegramService {
                 this.sendMessageToUser(chatId, "You have subscribed to daily weather updates.");
             }
         } catch (error) {
-            this.logger.error(`Failed to subscribe user: ${error.message}`);
-            this.sendMessageToUser(chatId, "You Are already subscribed");
+            
+            this.sendMessageToUser(chatId, "You Are already Subscribed");
         }
     };
 
