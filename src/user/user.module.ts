@@ -4,7 +4,7 @@ import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './user.model';
 import { SubscribedSchema } from './subscribed.model';
-import { GoogleStrategy } from './google.startegy';
+
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { GoogleStrategy } from './google.startegy';
       { name: 'Subscribed', schema: SubscribedSchema }
     ]),
   ],
-  providers: [UserService,GoogleStrategy],
+  providers: [UserService],
   exports: [UserService],
   controllers: [UserController],
 })
