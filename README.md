@@ -51,7 +51,7 @@ The bot will be accessible at http://localhost:8000.
 - /start - Subscribe to daily weather updates.
 - /stop - Unsubscribe from daily weather updates.
 ####  Admin Panel
-- Access the admin panel at http://localhost:3000/admin.
+- Access the admin panel at http://localhost:8000/admin.
 - Use Google login to authenticate.
 - Update bot settings and manage user accounts.
 #### Weather Update
