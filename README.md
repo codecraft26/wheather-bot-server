@@ -1,10 +1,10 @@
 ## WeatherBot using NestJS
-### Prerequisites
+#### Prerequisites
 - Node.js installed
 - MongoDB installed
 - Telegram Bot token from BotFather
 - OpenWeatherMap API key
-### Steps
+#### Steps
 Clone the Repository
 ```bash
 
@@ -47,12 +47,12 @@ npm start
 ```
 The bot will be accessible at http://localhost:8000.
 
-Telegram Commands
+##### Telegram Commands
 - /start - Subscribe to daily weather updates.
 - /stop - Unsubscribe from daily weather updates.
-- Admin Panel
+####  Admin Panel
 - Access the admin panel at http://localhost:3000/admin.
 - Use Google login to authenticate.
 - Update bot settings and manage user accounts.
-Weather Update
+#### Weather Update
 - The bot sends weather updates daily at 9 AM using the OpenWeatherMap API.
