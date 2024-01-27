@@ -18,7 +18,7 @@ cd wheather-bot-server
 ```bash
  npm install
 ```
-
+### a
 ##### Set Environment Variables
 Create a .env file in the root directory with the following content:
 
